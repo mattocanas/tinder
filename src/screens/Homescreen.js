@@ -9,11 +9,12 @@ import {
   Pressable,
   useWindowDimensions,
 } from 'react-native';
+import Card from '../components/Card';
+import users from '../../assets/data/users';
 
-import Homescreen from './src/screens/Homescreen';
-import MatchesScreen from './src/screens/MatchesScreen';
+import AnimatedStack from '../components/AnimatedStack/index';
 
-export default function App() {
+export default function Homescreen() {
   const onSwipeLeft = user => {
     console.warn('swipe left', user.name);
   };
@@ -24,12 +25,21 @@ export default function App() {
 
   return (
     <View style={styles.pageContainer}>
-      {/* <Homescreen /> */}
-      <MatchesScreen />
+      <AnimatedStack
+        data={users}
+        renderItem={({item}) => <Card user={item} />}
+        onSwipeRight={onSwipeRight}
+        onSwipeLeft={onSwipeLeft}
+      />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  pageContainer: {justifyContent: 'center', alignItems: 'center', flex: 1},
+  pageContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    flex: 1,
+    width: '100%',
+  },
 });
