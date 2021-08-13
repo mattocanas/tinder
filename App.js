@@ -17,9 +17,14 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import Homescreen from './src/screens/Homescreen';
 import MatchesScreen from './src/screens/MatchesScreen';
-import {color} from 'react-native-reanimated';
+import Amplify from 'aws-amplify';
+import {withAuthenticator} from 'aws-amplify-react-native';
+import config from './src/aws-exports';
+import ProfileScreen from './src/screens/ProfileScreen';
 
-export default function App() {
+Amplify.configure(config);
+
+const App = () => {
   const color = '#b5b5b5';
   const activeColor = '#f76c6b';
 
@@ -48,16 +53,24 @@ export default function App() {
               color={activeScreen == 'CHAT' ? activeColor : color}
             />
           </Pressable>
-          <FontAwesome name="user" size={30} color={color} />
+
+          <Pressable onPress={() => setActiveScreen('PROFILE')}>
+            <FontAwesome
+              name="user"
+              size={30}
+              color={activeScreen == 'PROFILE' ? activeColor : color}
+            />
+          </Pressable>
         </View>
 
         {activeScreen == 'HOME' && <Homescreen />}
 
         {activeScreen == 'CHAT' && <MatchesScreen />}
+        {activeScreen == 'PROFILE' && <ProfileScreen />}
       </View>
     </SafeAreaView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   pageContainer: {justifyContent: 'center', alignItems: 'center', flex: 1},
@@ -69,3 +82,5 @@ const styles = StyleSheet.create({
     padding: 10,
   },
 });
+
+export default withAuthenticator(App);
